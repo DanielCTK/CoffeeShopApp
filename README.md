@@ -476,3 +476,77 @@ CoffeeShopApp/
 *   **Ưu tiên Core Features:** Hoàn thành các yêu cầu chính trong Rubrics trước khi làm thêm tính năng phụ.
 
 
+**Các Thao tác Git cơ bản trong Eclipse (EGit):**
+
+Bạn sẽ chủ yếu tương tác với Git qua các view sau:
+
+*   **`Package Explorer` hoặc `Project Explorer`:** Hiển thị các dấu hiệu thay đổi trên file/folder (ví dụ: `>` cho file đã thay đổi, `*` cho file mới chưa được track).
+*   **`Git Staging` View:** Đây là view quan trọng nhất để thực hiện Add (Stage) và Commit. Mở nó qua `Window -> Show View -> Other... -> Git -> Git Staging`.
+*   **`Git Repositories` View:** Quản lý các repository local và remote, thực hiện Pull, Push, xem nhánh... Mở qua `Window -> Show View -> Other... -> Git -> Git Repositories`.
+*   **`History` View:** Xem lịch sử commit. Mở bằng cách chuột phải vào project/file -> `Team -> Show in History`.
+
+**Quy trình làm việc thông thường:**
+
+1.  **Clone Repository từ GitHub (Nếu bắt đầu dự án đã có trên GitHub):**
+    *   Mở view `Git Repositories`.
+    *   Nhấp vào biểu tượng "Clone a Git repository" (biểu tượng giống mũi tên xanh lục tải xuống).
+    *   Trong hộp thoại "Clone Git Repository":
+        *   **URI:** Dán URL của repository GitHub của bạn (ví dụ: `https://github.com/yourusername/coffeeshopapp.git`). Các trường khác thường tự điền.
+        *   **Authentication:** Nhập Username GitHub của bạn. Đối với Password, **hãy sử dụng Personal Access Token (PAT)** thay vì mật khẩu GitHub thông thường. Bạn cần tạo PAT trên GitHub với quyền `repo`.
+        *   Chọn nhánh (branch) bạn muốn clone (thường là `main` hoặc `develop`).
+        *   Chọn thư mục local để lưu repository.
+    *   Nhấn `Next` và `Finish`.
+    *   Sau khi clone xong, chuột phải vào repository vừa clone trong view `Git Repositories` -> `Import Projects...` để đưa project vào workspace Eclipse của bạn.
+
+2.  **Chia sẻ Project hiện có lên Git (Nếu bắt đầu dự án local):**
+    *   Chuột phải vào project của bạn trong `Package Explorer`.
+    *   Chọn `Team -> Share Project...`.
+    *   Chọn `Git` và nhấn `Next`.
+    *   Tick vào ô vuông cạnh tên project của bạn.
+    *   Nhấn `Create Repository` -> `Finish`. Thao tác này sẽ tạo một kho Git local trong thư mục project của bạn.
+    *   Bạn cần tạo một repository trống trên GitHub, sau đó liên kết remote và push lần đầu (xem bước Push).
+
+3.  **Thực hiện thay đổi Code:** Sửa, thêm, xóa file như bình thường trong Eclipse. (***Chú ý từ mục này trở về sau***)
+
+4.  **Staging Changes (Tương đương `git add`):**
+    *   Mở view `Git Staging`.
+    *   Các file bạn đã thay đổi sẽ xuất hiện trong ô **`Unstaged Changes`**.
+    *   **Cách Stage:**
+        *   **Kéo và thả:** Kéo các file/thư mục từ `Unstaged Changes` sang ô **`Staged Changes`**.
+        *   **Nút (+):** Chọn các file trong `Unstaged Changes` và nhấp vào nút `+` (Add selected files to index).
+        *   **Chuột phải:** Chuột phải vào file trong `Package Explorer` -> `Team -> Add to Index`.
+    *   Chỉ những thay đổi trong ô `Staged Changes` mới được đưa vào commit tiếp theo.
+
+5.  **Committing Changes (Tương đương `git commit`):**
+    *   Trong view `Git Staging`:
+        *   Đảm bảo các thay đổi bạn muốn commit đã nằm trong ô `Staged Changes`.
+        *   Nhập một **Commit Message** rõ ràng, có ý nghĩa vào ô `Commit Message`.
+        *   Kiểm tra thông tin Author và Committer (thường được lấy từ cấu hình Git global).
+        *   Nhấn nút **`Commit`**. Thao tác này chỉ lưu commit vào **repository local** của bạn.
+        *   (Tùy chọn) Nhấn **`Commit and Push...`**: Thực hiện commit local và **ngay lập tức** mở hộp thoại Push để đẩy lên remote (GitHub).
+
+6.  **Pushing Changes (Tương đương `git push`):** Đẩy các commit local lên remote repository (GitHub).
+    *   **Cách 1 (Sau khi Commit):** Nếu bạn chỉ nhấn `Commit`, hãy chuột phải vào project -> `Team -> Push Branch 'branch_name'...` (ví dụ: `Push Branch 'develop'...`) hoặc `Push to Upstream`.
+    *   **Cách 2 (Từ Git Repositories):** Mở view `Git Repositories`, tìm repository của bạn, mở rộng `Branches -> Local Branches`, chuột phải vào nhánh muốn push (ví dụ `develop`) -> `Push Branch...`.
+    *   **Cách 3 (Commit and Push):** Như đã đề cập ở bước Commit.
+    *   **Hộp thoại Push:**
+        *   Chọn `Remote` (thường là `origin`).
+        *   Cấu hình `Ref mappings` (thường EGit tự động đề xuất đúng).
+        *   Nhấn `Preview` để xem trước, sau đó nhấn `Push`.
+        *   Bạn có thể cần nhập lại **Personal Access Token** nếu chưa lưu.
+
+7.  **Pulling Changes (Tương đương `git pull`, tức là `git fetch` + `git merge`):** Lấy các thay đổi mới nhất từ remote (GitHub) về và trộn vào nhánh local của bạn.
+    *   **Cách 1:** Chuột phải vào project -> `Team -> Pull`. EGit sẽ tự động fetch từ remote `origin` và merge vào nhánh hiện tại của bạn.
+    *   **Cách 2 (Từ Git Repositories):** Mở view `Git Repositories`, chuột phải vào tên repository -> `Pull`.
+    *   **Quan trọng:** **Luôn Pull trước khi bạn bắt đầu code một tính năng mới hoặc trước khi Push code của bạn lên**, để đảm bảo bạn đang làm việc trên phiên bản mới nhất và giảm thiểu xung đột (conflicts).
+    *   **Conflicts:** Nếu có xung đột giữa thay đổi của bạn và thay đổi trên remote, EGit sẽ báo lỗi. Các file bị conflict sẽ được đánh dấu đặc biệt trong `Git Staging`. Bạn cần:
+        *   Chuột phải vào file conflict -> `Merge Tool` để mở trình giải quyết conflict của Eclipse.
+        *   Hoặc mở file và sửa thủ công các đoạn đánh dấu `<<<<<<<`, `=======`, `>>>>>>>`.
+        *   Sau khi giải quyết xong, **phải Stage (Add to Index)** file đó lại.
+        *   Cuối cùng, thực hiện một commit mới để hoàn tất việc merge.
+
+8.  **Xem lịch sử (History):**
+    *   Chuột phải vào project hoặc file cụ thể -> `Team -> Show in History`.
+    *   View `History` sẽ hiển thị danh sách các commit, bạn có thể xem chi tiết thay đổi của từng commit.
+
+
