@@ -353,5 +353,4 @@ CoffeeShopApp/
 *   **Giải quyết Conflict cùng nhau:** Nếu xảy ra conflict, cả hai cùng ngồi lại xử lý.
 *   **Ưu tiên Core Features:** Hoàn thành các yêu cầu chính trong Rubrics trước khi làm thêm tính năng phụ.
 
-Bảng phân công này chi tiết hơn, tích hợp đầy đủ các yêu cầu mới và được thiết kế để Phúc và Danh có thể làm việc song song hiệu quả hơn trên GitHub. Chúc hai bạn thành công!
 
