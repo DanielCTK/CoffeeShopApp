@@ -180,7 +180,7 @@ CoffeeShopApp/
 *   **Đáp ứng yêu cầu:** Tích hợp rõ ràng JavaFX (Controller, FXML), MySQL (DAO, Util), JFreeChart (Util, Service, Controller), OOP (Entity, Interface/Impl, Inheritance), Data Structures (Util, Service), Algorithms (Util - Hashing, Service/Controller - Sort/Search).
 *   **Tích hợp Scene Builder:** Hoàn toàn tương thích, FXML nằm riêng trong `resources`, Controller liên kết qua `fx:controller` và `@FXML`.
 
-#PHÂN CHIA TASK (PHÚC - DANH)
+# PHÂN CHIA TASK (PHÚC - DANH)
 
 **Dưới đây là gợi ý phân chia task chi tiết, logic và an toàn, tập trung vào việc giảm thiểu xung đột (merge conflicts) và đảm bảo cả hai bạn đều nắm được các phần quan trọng của ứng dụng:
 
