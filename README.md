@@ -1,5 +1,72 @@
 # CoffeeShopApp
 
+
+## Mục đích Ứng dụng (Application Purpose)
+
+Đây là một **Ứng dụng Quản lý Nội bộ dạng Desktop cho Quán Cà Phê**, được xây dựng bằng Java (với JavaFX cho giao diện người dùng), kết nối tới cơ sở dữ liệu MySQL và sử dụng thư viện JFreeChart để trực quan hóa dữ liệu.
+
+Ứng dụng này nhằm mục đích **số hóa và hợp lý hóa các hoạt động quản lý hàng ngày** của quán, cung cấp các công cụ cho hai vai trò người dùng chính: **Quản lý (Admin)** và **Nhân viên (Staff)**.
+
+**Các chức năng chính bao gồm:**
+
+1.  **Xác thực và Phân quyền:**
+    *   Hệ thống đăng nhập/đăng xuất an toàn (sử dụng mật khẩu băm).
+    *   Phân quyền truy cập chức năng rõ ràng dựa trên vai trò (Admin/Staff).
+2.  **Quản lý Dữ liệu Cốt lõi (CRUD):**
+    *   **Quản lý Sản phẩm:** Cho phép xem, thêm, sửa, xóa các món đồ uống/thức ăn (Admin có toàn quyền, Staff có thể bị giới hạn quyền).
+    *   **Quản lý Danh mục:** Tổ chức sản phẩm theo loại (Admin có toàn quyền, Staff chỉ xem).
+    *   **Quản lý Đơn hàng:** Xem lịch sử đơn hàng, chi tiết đơn hàng (Admin xem toàn bộ, Staff xem giới hạn/đơn của mình, có thể có chức năng tạo đơn cho Staff).
+    *   **Quản lý Người dùng (Chỉ Admin):** Admin có khả năng tạo, xem, sửa, và quản lý (vô hiệu hóa/kích hoạt) tài khoản cho nhân viên.
+3.  **Theo dõi và Báo cáo (Dashboard):**
+    *   Cung cấp một giao diện tổng quan (Dashboard) hiển thị các số liệu và biểu đồ thống kê (sử dụng JFreeChart).
+    *   Giúp theo dõi hiệu suất kinh doanh (ví dụ: doanh thu, sản phẩm bán chạy). Admin có thể xem báo cáo chi tiết hơn Staff.
+4.  **Quản lý Hồ sơ cá nhân:** Cho phép cả Admin và Staff xem và cập nhật thông tin cá nhân của họ, bao gồm thay đổi mật khẩu.
+
+**Tóm lại, ứng dụng này phục vụ như một công cụ trung tâm giúp:**
+*   **Nhân viên (Staff):** Thực hiện các tác vụ vận hành cơ bản (quản lý sản phẩm giới hạn, xử lý đơn hàng nếu có) và tự quản lý hồ sơ.
+*   **Quản lý (Admin):** Giám sát toàn bộ hoạt động, quản lý dữ liệu cốt lõi (sản phẩm, danh mục), theo dõi hiệu suất kinh doanh qua báo cáo chi tiết, và quản lý tài khoản nhân viên.
+
+
+## Phân Chia Chức Năng Cụ Thể:
+
+**1. Tài khoản Quản lý (Admin):**
+
+*   **Mục đích:** Quản lý toàn bộ hoạt động của quán trên hệ thống, bao gồm cả quản lý nhân viên và cấu hình cơ bản. Có quyền truy cập cao nhất.
+*   **Chức năng cụ thể:**
+    *   **Login / Logout:** Có thể đăng nhập và đăng xuất.
+    *   **Xem Dashboard:** Xem *tất cả* các báo cáo thống kê (Doanh thu tổng, sản phẩm bán chạy nhất toàn thời gian, hiệu suất theo nhân viên (nếu có),...).
+    *   **Quản lý Sản phẩm:** **Toàn quyền CRUD** (Xem danh sách, Thêm mới, Sửa thông tin chi tiết, Xóa sản phẩm).
+    *   **Quản lý Danh mục:** **Toàn quyền CRUD** (Xem, Thêm, Sửa, Xóa danh mục sản phẩm).
+    *   **Quản lý Đơn hàng:** Xem *tất cả* lịch sử đơn hàng, xem chi tiết đơn hàng, có thể có quyền cập nhật trạng thái đơn hàng (ví dụ: hủy đơn).
+    *   **Quản lý Người dùng:** **Đây là quyền đặc trưng của Admin:**
+        *   Xem danh sách *tất cả* người dùng (cả Admin khác và Staff).
+        *   **Tạo tài khoản mới cho Nhân viên (Staff).**
+        *   Sửa thông tin tài khoản của Nhân viên (ví dụ: cập nhật tên, email, reset mật khẩu).
+        *   Vô hiệu hóa/Kích hoạt lại tài khoản Nhân viên.
+        *   (Tùy chọn) Xóa tài khoản Nhân viên.
+    *   **Xem/Sửa Hồ sơ cá nhân:** Xem và sửa thông tin cá nhân của chính mình (bao gồm đổi mật khẩu).
+
+**2. Tài khoản Nhân viên (Staff):**
+
+*   **Mục đích:** Thực hiện các tác vụ vận hành hàng ngày trên hệ thống, ghi nhận hoạt động bán hàng (nếu có chức năng tạo đơn), quản lý sản phẩm ở mức độ cơ bản. Quyền truy cập bị giới hạn.
+*   **Chức năng cụ thể:**
+    *   **Login / Logout:** Có thể đăng nhập và đăng xuất.
+    *   **Xem Dashboard:** Xem các báo cáo cơ bản, liên quan đến hoạt động trong ngày hoặc cá nhân (Ví dụ: Doanh thu ca làm việc (nếu có), sản phẩm bán chạy trong ngày, các đơn hàng gần đây). *Một số biểu đồ chi tiết chỉ dành cho Admin.*
+    *   **Quản lý Sản phẩm:**
+        *   **Xem danh sách sản phẩm.**
+        *   (Tùy chọn, nên cân nhắc) Có thể được phép **Sửa** một số thông tin giới hạn như *số lượng tồn kho* (nếu có quản lý kho) hoặc *giá* (nếu được phép).
+        *   **Không được phép** Thêm sản phẩm mới hoặc Xóa sản phẩm.
+    *   **Quản lý Danh mục:** Chỉ được **Xem** danh sách danh mục để biết sản phẩm thuộc loại nào. **Không** được Thêm/Sửa/Xóa.
+    *   **Quản lý Đơn hàng:**
+        *   (Nếu có chức năng POS) **Tạo đơn hàng mới.**
+        *   Xem lịch sử các đơn hàng *do mình tạo* hoặc các đơn hàng *gần đây*.
+        *   Có thể được phép cập nhật trạng thái đơn hàng *do mình phụ trách* (ví dụ: "Đang chuẩn bị", "Đã xong").
+        *   **Không** được xem toàn bộ lịch sử đơn hàng của người khác (trừ khi có cấu hình khác). **Không** được xóa đơn hàng.
+    *   **Quản lý Người dùng:** **Không có quyền này.** Không thể xem danh sách người dùng khác, không thể tạo/sửa/xóa tài khoản.
+    *   **Xem/Sửa Hồ sơ cá nhân:** Chỉ xem và sửa thông tin cá nhân của chính mình (bao gồm đổi mật khẩu).
+
+
+
 ```
 CoffeeShopApp/
 │
