@@ -182,7 +182,7 @@ CoffeeShopApp/
 
 # PHÂN CHIA TASK (PHÚC - DANH)
 
-**Dưới đây là gợi ý phân chia task chi tiết, logic và an toàn, tập trung vào việc giảm thiểu xung đột (merge conflicts) và đảm bảo cả hai bạn đều nắm được các phần quan trọng của ứng dụng:
+**Dưới đây là gợi ý phân chia task chi tiết, logic và an toàn, tập trung vào việc giảm thiểu xung đột (merge conflicts) và đảm bảo cả hai bạn đều nắm được các phần quan trọng của ứng dụng:**
 
 **Nguyên tắc chung:**
 
