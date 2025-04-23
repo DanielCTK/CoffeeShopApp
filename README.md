@@ -120,7 +120,74 @@ Ngoài các chức năng cơ bản đã có:
 
 ---
 
+## Công nghệ sử dụng (Technologies Used)
 
+*   **Ngôn ngữ:** Java (JDK 11 hoặc mới hơn)
+*   **Giao diện người dùng (UI):** JavaFX (sử dụng FXML và Scene Builder)
+*   **Cơ sở dữ liệu:** MySQL Server (phiên bản 8.0 hoặc tương thích)
+*   **Thư viện Biểu đồ:** JFreeChart
+*   **Kết nối CSDL:** JDBC (thông qua MySQL Connector/J)
+*   **Mã hóa Mật khẩu:** jBCrypt (hoặc thư viện tương tự)
+*   **IDE:** Eclipse IDE for Java Developers (hoặc IntelliJ IDEA)
+*   **Quản lý Mã nguồn:** Git & GitHub
+
+---
+
+## Thư viện Ngoài (External Libraries)
+
+Các thư viện sau cần được thêm vào project (trong thư mục `lib/` hoặc quản lý qua Maven/Gradle):
+
+*   **MySQL Connector/J:** `mysql-connector-j-x.x.x.jar` (Thay `x.x.x` bằng phiên bản cụ thể) - Để kết nối Java với MySQL.
+*   **JFreeChart:** `jfreechart-x.x.x.jar` - Để vẽ biểu đồ.
+*   **JCommon:** `jcommon-x.x.x.jar` - Thư viện phụ thuộc của JFreeChart.
+*   **jBCrypt:** `jbcrypt-x.x.jar` (Ví dụ: `jbcrypt-0.4.jar`) - Để băm và xác thực mật khẩu an toàn.
+*   **(Nếu dùng Java 11+ và JavaFX riêng):** Các module JavaFX SDK (ví dụ: `javafx-controls`, `javafx-fxml`, `javafx-graphics`, `javafx-base`, `javafx-swing-interop` cho JFreeChart).
+
+---
+
+## Cài đặt Môi trường (Environment Setup)
+
+Để chạy và phát triển ứng dụng này, bạn cần cài đặt:
+
+1.  **Java Development Kit (JDK):** Phiên bản 11 hoặc cao hơn. Đảm bảo đã cấu hình biến môi trường `JAVA_HOME`.
+2.  **MySQL Server:** Phiên bản 8.0 hoặc tương thích. Tạo một database (ví dụ: `coffeeshop_db`) và một user có quyền truy cập vào database đó.
+3.  **IDE (Khuyến nghị):** Eclipse IDE for Java Developers hoặc IntelliJ IDEA.
+4.  **Scene Builder:** (Tùy chọn nhưng rất khuyến khích) Để chỉnh sửa file FXML trực quan. Cần cấu hình đường dẫn tới Scene Builder trong IDE.
+5.  **Git:** Để quản lý mã nguồn và làm việc nhóm.
+
+---
+
+## Hướng dẫn Cài đặt & Chạy Ứng dụng (Setup & Run Instructions)
+
+1.  **Clone Repository:**
+    Mở terminal hoặc Git Bash và chạy lệnh sau (thay `<your-repo-url>` bằng link public GitHub của bạn):
+    ```bash
+    git clone <your-repo-url>
+    cd coffeeshopapp
+    ```
+    *(Ví dụ Link Repo: `https://github.com/yourusername/coffeeshopapp.git`)*
+
+2.  **Import Project vào IDE:**
+    *   **Eclipse:** Chọn `File -> Import... -> General -> Existing Projects into Workspace`, chọn thư mục `coffeeshopapp` vừa clone về.
+    *   **IntelliJ IDEA:** Chọn `File -> Open...` và chọn thư mục `coffeeshopapp`.
+
+3.  **Thêm Thư viện (Nếu không dùng Maven/Gradle):**
+    *   Trong Eclipse: Chuột phải vào project -> `Build Path -> Configure Build Path... -> Libraries -> Classpath -> Add JARs...` (hoặc `Add External JARs...`) và chọn tất cả các file `.jar` trong thư mục `lib/`.
+    *   Trong IntelliJ: `File -> Project Structure... -> Modules -> Dependencies -> + -> JARs or directories...` và chọn các file `.jar` trong `lib/`.
+
+4.  **Thiết lập Cơ sở dữ liệu:**
+    *   Sử dụng một công cụ quản lý CSDL (MySQL Workbench, DBeaver,...) để kết nối tới MySQL Server của bạn.
+    *   Tạo database: `CREATE DATABASE IF NOT EXISTS coffeeshop_db;`
+    *   Chọn database: `USE coffeeshop_db;`
+    *   Chạy script tạo bảng: Thực thi nội dung file `resources/sql/schema.sql`.
+    *   (Tùy chọn) Chạy script chèn dữ liệu mẫu: Thực thi nội dung file `resources/sql/data.sql` (Đặc biệt là tài khoản Admin ban đầu).
+    *   **Cấu hình Kết nối:** Mở file `resources/config/db.properties` và cập nhật các giá trị `db.url`, `db.username`, `db.password` cho phù hợp với cấu hình MySQL của bạn.
+        *   Ví dụ `db.url`: `jdbc:mysql://localhost:3306/coffeeshop_db`
+
+5.  **Chạy Ứng dụng:**
+    *   Tìm lớp `com.youruniversity.coffeeshop.MainApp.java` trong IDE.
+    *   Chuột phải vào file `MainApp.java` và chọn `Run As -> Java Application`.
+    *   Màn hình đăng nhập sẽ xuất hiện. Sử dụng tài khoản Admin đã tạo trong `data.sql` (hoặc tạo thủ công) để đăng nhập lần đầu.
 
 ```
 CoffeeShopApp/
