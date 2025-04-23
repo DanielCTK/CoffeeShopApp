@@ -196,7 +196,7 @@ CoffeeShopApp/
 
 **Giai đoạn 1: Khởi tạo & Nền tảng (Cả hai cùng làm hoặc phân công rõ)**
 
-1.  **Phúc (Lead) & Danh (Support/Review):**
+1.  **Phúc & Danh :**
     *   **Task 1.1:** Tạo GitHub Repository (private), mời Danh làm collaborator.
     *   **Task 1.2:** Thiết lập cấu trúc project chuẩn trong Eclipse (theo cấu trúc đã thống nhất).
     *   **Task 1.3:** Cấu hình file `.gitignore` chuẩn cho Java/Eclipse/Maven(nếu dùng).
@@ -210,12 +210,12 @@ CoffeeShopApp/
 
 **Giai đoạn 2: Xây dựng Tầng Data Access (DAO) & Service Interfaces**
 
-2.  **Phúc (Lead - DAO & Service Interfaces):**
+2.  **Phúc (DAO & Service Interfaces):**
     *   **Task 2.1:** Định nghĩa các Interfaces cho DAO: `IUserDAO.java`, `ICategoryDAO.java`, `IProductDAO.java`, `IOrderDAO.java`, `IOrderDetailDAO.java`. Xác định các phương thức CRUD cơ bản và các phương thức truy vấn đặc thù (ví dụ: `findByUsername`, `findAllByCategoryId`, `findOrdersByUserId`...).
     *   **Task 2.2:** Triển khai các lớp DAO cơ bản (`UserDaoImpl.java`, `CategoryDaoImpl.java`,...) với các phương thức `findById`, `findAll`. *(Phúc làm chính)*
     *   **Task 2.3:** Định nghĩa các Interfaces cho Service: `IAuthService.java`, `ICategoryService.java`, `IProductService.java`, `IOrderService.java`, `IReportService.java`. Xác định các phương thức nghiệp vụ chính. *(Phúc làm chính, Danh cần xem để hiểu cách gọi từ Controller)*
 
-3.  **Danh (Lead - Setup UI cơ bản & Utils hỗ trợ):**
+3.  **Danh (Setup UI cơ bản & Utils hỗ trợ):**
     *   **Task 2.4:** Tạo file `MainApp.java` để khởi chạy ứng dụng JavaFX.
     *   **Task 2.5:** Thiết kế (dùng Scene Builder) và tạo file FXML cơ bản cho màn hình Login (`LoginView.fxml`) và Khung chính/Dashboard (`MainView.fxml` hoặc `DashboardView.fxml`) với các layout chính, menu (nếu có).
     *   **Task 2.6:** Tạo lớp `SessionManager.java` để quản lý thông tin người dùng đăng nhập (có thể dùng `HashMap`).
@@ -226,13 +226,13 @@ CoffeeShopApp/
 
 **Giai đoạn 3: Triển khai Tính năng cốt lõi (Login, Quản lý cơ bản)**
 
-4.  **Phúc (Lead - Backend Logic):**
+4.  **Phúc (Backend Logic):**
     *   **Task 3.1:** Hoàn thiện `UserDaoImpl.java` (thêm `findByUsername`, `save` - nhớ hash password, `update`...).
     *   **Task 3.2:** Triển khai `AuthService.java` (logic `login`, `logout`, gọi `UserDao`, `PasswordUtils`, `SessionManager`).
     *   **Task 3.3:** Hoàn thiện `CategoryDaoImpl.java`, `ProductDaoImpl.java` (đầy đủ CRUD).
     *   **Task 3.4:** Triển khai `CategoryService.java`, `ProductService.java` (logic nghiệp vụ cơ bản, gọi DAO tương ứng, validation đơn giản).
 
-5.  **Danh (Lead - Frontend & Controller):**
+5.  **Danh (Frontend & Controller):**
     *   **Task 3.5:** Hoàn thiện `LoginView.fxml` (thêm `fx:id` cho các control).
     *   **Task 3.6:** Tạo và triển khai `LoginController.java` (liên kết FXML, xử lý sự kiện nút Login, gọi `AuthService.login()`, xử lý kết quả, chuyển màn hình nếu thành công, sử dụng `SessionManager`).
     *   **Task 3.7:** Hoàn thiện FXML cho Quản lý Danh mục (`CategoryManagementView.fxml`) và Sản phẩm (`ProductManagementView.fxml`) - Bảng hiển thị, các nút chức năng, form nhập liệu.
@@ -242,13 +242,13 @@ CoffeeShopApp/
 
 **Giai đoạn 4: Hoàn thiện Tính năng (Orders, Dashboard, Profile) & Refine**
 
-6.  **Phúc (Lead - Backend Orders & Reports):**
+6.  **Phúc (Backend Orders & Reports):**
     *   **Task 4.1:** Hoàn thiện `OrderDaoImpl.java`, `OrderDetailDaoImpl.java` (CRUD, các hàm lấy đơn hàng theo điều kiện).
     *   **Task 4.2:** Triển khai `OrderService.java` (logic tạo đơn hàng - cần xử lý transaction nếu có thể, lấy danh sách đơn hàng...).
     *   **Task 4.3:** Triển khai `ReportService.java` (logic truy vấn, tổng hợp dữ liệu cho các biểu đồ - ví dụ: doanh thu theo ngày/tháng, sản phẩm bán chạy...). *(Cần cung cấp dữ liệu rõ ràng cho Danh)*
     *   **Task 4.4:** Hoàn thiện logic cập nhật Profile trong `UserService` / `AuthService` và `UserDao`.
 
-7.  **Danh (Lead - Frontend Orders, Dashboard, Profile & Charts):**
+7.  **Danh (Frontend Orders, Dashboard, Profile & Charts):**
     *   **Task 4.5:** Hoàn thiện FXML cho Quản lý Đơn hàng (`OrderManagementView.fxml`) và chi tiết đơn hàng.
     *   **Task 4.6:** Triển khai `OrderManagementController.java` (hiển thị danh sách đơn hàng, xem chi tiết, có thể thêm chức năng cập nhật trạng thái đơn hàng - gọi `OrderService`).
     *   **Task 4.7:** Tạo lớp `ChartUtils.java` (chứa các hàm tạo `JFreeChart` từ dữ liệu đầu vào và cách nhúng vào JavaFX - ví dụ dùng `SwingNode`).
