@@ -180,3 +180,104 @@ CoffeeShopApp/
 *   **Đáp ứng yêu cầu:** Tích hợp rõ ràng JavaFX (Controller, FXML), MySQL (DAO, Util), JFreeChart (Util, Service, Controller), OOP (Entity, Interface/Impl, Inheritance), Data Structures (Util, Service), Algorithms (Util - Hashing, Service/Controller - Sort/Search).
 *   **Tích hợp Scene Builder:** Hoàn toàn tương thích, FXML nằm riêng trong `resources`, Controller liên kết qua `fx:controller` và `@FXML`.
 
+#PHÂN CHIA TASK (PHÚC - DANH)
+
+**Dưới đây là gợi ý phân chia task chi tiết, logic và an toàn, tập trung vào việc giảm thiểu xung đột (merge conflicts) và đảm bảo cả hai bạn đều nắm được các phần quan trọng của ứng dụng:
+
+**Nguyên tắc chung:**
+
+*   **Ưu tiên nền tảng:** Xây dựng các thành phần cốt lõi, ít thay đổi trước (Database, Entities, Utils).
+*   **Phân theo Layer/Module:** Một người tập trung hơn vào Backend (Data Access, Business Logic), người kia tập trung hơn vào Frontend (UI, Controller) nhưng cả hai cần hiểu sự kết nối.
+*   **Giao tiếp qua Interfaces:** Định nghĩa các Interfaces (IDAO, IService) sớm để cả hai có thể làm việc song song dựa trên "hợp đồng" đã thống nhất.
+*   **GitHub Flow:** Sử dụng `main` (hoặc `master`) là nhánh ổn định. Nhánh `develop` là nhánh tích hợp chính. Mỗi tính năng/task lớn nên làm trên một nhánh riêng (feature branch) rồi tạo Pull Request (PR) vào `develop`. Review code của nhau trước khi merge.
+*   **Thường xuyên Commit & Push:** Commit nhỏ, thường xuyên với message rõ ràng. Push lên nhánh feature của mình và Pull từ `develop` về thường xuyên để giảm thiểu conflict lớn.
+
+**Phân chia Task chi tiết:**
+
+**Giai đoạn 1: Khởi tạo & Nền tảng (Cả hai cùng làm hoặc phân công rõ)**
+
+1.  **Phúc (Lead) & Danh (Support/Review):**
+    *   **Task 1.1:** Tạo GitHub Repository (private), mời Danh làm collaborator.
+    *   **Task 1.2:** Thiết lập cấu trúc project chuẩn trong Eclipse (theo cấu trúc đã thống nhất).
+    *   **Task 1.3:** Cấu hình file `.gitignore` chuẩn cho Java/Eclipse/Maven(nếu dùng).
+    *   **Task 1.4:** Thêm các thư viện cần thiết vào `lib` (hoặc cấu hình `pom.xml`/`build.gradle` nếu dùng Maven/Gradle) - MySQL Connector, JFreeChart + JCommon, BCrypt.
+    *   **Task 1.5:** Tạo file `db.properties` và lớp `DatabaseConnection.java` (quản lý kết nối DB). *(Phúc làm chính, Danh review)*
+    *   **Task 1.6:** Thiết kế và viết script `schema.sql` (tạo các bảng: `users`, `categories`, `products`, `orders`, `order_details` - đảm bảo có đủ khóa chính, khóa ngoại, ràng buộc). *(Phúc làm chính, Danh review)*
+    *   **Task 1.7:** Tạo lớp `PasswordUtils.java` (sử dụng BCrypt để hash và verify). *(Danh làm chính, Phúc review)*
+    *   **Task 1.8:** Tạo các lớp `Entity` cơ bản (POJOs: `User.java`, `Category.java`, `Product.java`, `Order.java`, `OrderDetail.java`) chỉ với thuộc tính và getter/setter. *(Phúc làm chính, Danh review)*
+
+    *Output Giai đoạn 1:* Project có cấu trúc chuẩn, kết nối được DB, có Entities cơ bản, sẵn sàng cho các tầng tiếp theo. Cả hai cần clone repo về và đảm bảo môi trường chạy giống nhau.
+
+**Giai đoạn 2: Xây dựng Tầng Data Access (DAO) & Service Interfaces**
+
+2.  **Phúc (Lead - DAO & Service Interfaces):**
+    *   **Task 2.1:** Định nghĩa các Interfaces cho DAO: `IUserDAO.java`, `ICategoryDAO.java`, `IProductDAO.java`, `IOrderDAO.java`, `IOrderDetailDAO.java`. Xác định các phương thức CRUD cơ bản và các phương thức truy vấn đặc thù (ví dụ: `findByUsername`, `findAllByCategoryId`, `findOrdersByUserId`...).
+    *   **Task 2.2:** Triển khai các lớp DAO cơ bản (`UserDaoImpl.java`, `CategoryDaoImpl.java`,...) với các phương thức `findById`, `findAll`. *(Phúc làm chính)*
+    *   **Task 2.3:** Định nghĩa các Interfaces cho Service: `IAuthService.java`, `ICategoryService.java`, `IProductService.java`, `IOrderService.java`, `IReportService.java`. Xác định các phương thức nghiệp vụ chính. *(Phúc làm chính, Danh cần xem để hiểu cách gọi từ Controller)*
+
+3.  **Danh (Lead - Setup UI cơ bản & Utils hỗ trợ):**
+    *   **Task 2.4:** Tạo file `MainApp.java` để khởi chạy ứng dụng JavaFX.
+    *   **Task 2.5:** Thiết kế (dùng Scene Builder) và tạo file FXML cơ bản cho màn hình Login (`LoginView.fxml`) và Khung chính/Dashboard (`MainView.fxml` hoặc `DashboardView.fxml`) với các layout chính, menu (nếu có).
+    *   **Task 2.6:** Tạo lớp `SessionManager.java` để quản lý thông tin người dùng đăng nhập (có thể dùng `HashMap`).
+    *   **Task 2.7:** (Optional) Tạo `BaseController.java` nếu muốn có các hàm tiện ích chung cho Controller.
+    *   **Task 2.8:** Tạo file `styles.css` cơ bản.
+
+    *Output Giai đoạn 2:* Có Interfaces cho DAO, Service. Có các DAO cơ bản. Có khung sườn UI ban đầu. Phúc và Danh có thể bắt đầu làm việc song song nhiều hơn dựa trên các Interfaces đã định nghĩa.
+
+**Giai đoạn 3: Triển khai Tính năng cốt lõi (Login, Quản lý cơ bản)**
+
+4.  **Phúc (Lead - Backend Logic):**
+    *   **Task 3.1:** Hoàn thiện `UserDaoImpl.java` (thêm `findByUsername`, `save` - nhớ hash password, `update`...).
+    *   **Task 3.2:** Triển khai `AuthService.java` (logic `login`, `logout`, gọi `UserDao`, `PasswordUtils`, `SessionManager`).
+    *   **Task 3.3:** Hoàn thiện `CategoryDaoImpl.java`, `ProductDaoImpl.java` (đầy đủ CRUD).
+    *   **Task 3.4:** Triển khai `CategoryService.java`, `ProductService.java` (logic nghiệp vụ cơ bản, gọi DAO tương ứng, validation đơn giản).
+
+5.  **Danh (Lead - Frontend & Controller):**
+    *   **Task 3.5:** Hoàn thiện `LoginView.fxml` (thêm `fx:id` cho các control).
+    *   **Task 3.6:** Tạo và triển khai `LoginController.java` (liên kết FXML, xử lý sự kiện nút Login, gọi `AuthService.login()`, xử lý kết quả, chuyển màn hình nếu thành công, sử dụng `SessionManager`).
+    *   **Task 3.7:** Hoàn thiện FXML cho Quản lý Danh mục (`CategoryManagementView.fxml`) và Sản phẩm (`ProductManagementView.fxml`) - Bảng hiển thị, các nút chức năng, form nhập liệu.
+    *   **Task 3.8:** Tạo và triển khai `CategoryManagementController.java` và `ProductManagementController.java` (hiển thị danh sách từ Service, xử lý các nút Add/Edit/Delete, gọi các phương thức CRUD của Service tương ứng, cập nhật UI). *(Phần này cần Danh gọi các Service do Phúc viết)*
+
+    *Output Giai đoạn 3:* Chức năng Đăng nhập hoạt động. Chức năng quản lý (CRUD) cho Danh mục và Sản phẩm hoạt động cơ bản. Cần tích hợp và kiểm thử kỹ luồng Login -> Quản lý.
+
+**Giai đoạn 4: Hoàn thiện Tính năng (Orders, Dashboard, Profile) & Refine**
+
+6.  **Phúc (Lead - Backend Orders & Reports):**
+    *   **Task 4.1:** Hoàn thiện `OrderDaoImpl.java`, `OrderDetailDaoImpl.java` (CRUD, các hàm lấy đơn hàng theo điều kiện).
+    *   **Task 4.2:** Triển khai `OrderService.java` (logic tạo đơn hàng - cần xử lý transaction nếu có thể, lấy danh sách đơn hàng...).
+    *   **Task 4.3:** Triển khai `ReportService.java` (logic truy vấn, tổng hợp dữ liệu cho các biểu đồ - ví dụ: doanh thu theo ngày/tháng, sản phẩm bán chạy...). *(Cần cung cấp dữ liệu rõ ràng cho Danh)*
+    *   **Task 4.4:** Hoàn thiện logic cập nhật Profile trong `UserService` / `AuthService` và `UserDao`.
+
+7.  **Danh (Lead - Frontend Orders, Dashboard, Profile & Charts):**
+    *   **Task 4.5:** Hoàn thiện FXML cho Quản lý Đơn hàng (`OrderManagementView.fxml`) và chi tiết đơn hàng.
+    *   **Task 4.6:** Triển khai `OrderManagementController.java` (hiển thị danh sách đơn hàng, xem chi tiết, có thể thêm chức năng cập nhật trạng thái đơn hàng - gọi `OrderService`).
+    *   **Task 4.7:** Tạo lớp `ChartUtils.java` (chứa các hàm tạo `JFreeChart` từ dữ liệu đầu vào và cách nhúng vào JavaFX - ví dụ dùng `SwingNode`).
+    *   **Task 4.8:** Hoàn thiện FXML cho Dashboard (`DashboardView.fxml`), thêm các vùng để hiển thị biểu đồ.
+    *   **Task 4.9:** Triển khai `DashboardController.java` (gọi `ReportService` để lấy dữ liệu, dùng `ChartUtils` để tạo và hiển thị các biểu đồ). *(Cần dữ liệu từ Phúc)*
+    *   **Task 4.10:** Tạo FXML (`UserProfileView.fxml`) và Controller (`UserProfileController.java`) cho chức năng xem/sửa hồ sơ cá nhân (gọi Service tương ứng).
+
+    *Output Giai đoạn 4:* Các chức năng chính hoàn thiện. Dashboard có biểu đồ. Có thể quản lý đơn hàng, hồ sơ. Cần test tích hợp toàn diện.
+
+**Giai đoạn 5: Hoàn thiện, Kiểm thử, Đóng gói & Tài liệu (Cả hai cùng làm)**
+
+8.  **Phúc & Danh:**
+    *   **Task 5.1:** **Kiểm thử chéo:** Phúc test các chức năng Danh làm và ngược lại. Ghi nhận và sửa lỗi.
+    *   **Task 5.2:** **Review Code:** Đọc lại code của nhau, góp ý về logic, performance, convention.
+    *   **Task 5.3:** **Refactor & Tối ưu:** Cải thiện những đoạn code chưa tốt, tối ưu truy vấn DB nếu cần.
+    *   **Task 5.4:** **Thêm tính năng phụ (Nếu có thời gian):** Tìm kiếm, lọc dữ liệu trên các bảng, phân trang... (Chia nhau làm).
+    *   **Task 5.5:** **Viết Unit Test (Khuyến khích):** Viết test cho các lớp Service, Utils quan trọng.
+    *   **Task 5.6:** **Hoàn thiện Tài liệu:**
+        *   README.md (Hướng dẫn cài đặt, chạy, mô tả...).
+        *   Báo cáo Word (Theo yêu cầu đề bài, chia nhau viết các phần, cùng review). Kiểm tra Turnitin.
+        *   UML Diagrams (ERD, Class Diagram).
+        *   Chuẩn bị file PPT.
+    *   **Task 5.7:** **Quay Video Demo:** Chuẩn bị kịch bản, cả hai cùng tham gia trình bày.
+    *   **Task 5.8:** **Đóng gói:** Đảm bảo mã nguồn sạch sẽ, tạo file nén cuối cùng theo yêu cầu.
+
+**Lưu ý quan trọng:**
+
+*   **Họp ngắn thường xuyên:** Hàng ngày hoặc cách ngày nên có buổi họp ngắn (15-30 phút) để cập nhật tiến độ, thảo luận khó khăn, thống nhất các điểm chung (ví dụ: cấu trúc dữ liệu trả về của Service).
+*   **Pull Request & Code Review:** *Bắt buộc* phải tạo PR cho các feature branch vào `develop`. Người còn lại phải review (ít nhất là đọc hiểu và đặt câu hỏi) trước khi merge. Điều này giúp cả hai nắm được code của nhau và phát hiện lỗi sớm.
+*   **Xử lý Conflicts:** Nếu có conflict khi merge hoặc pull, cần ngồi lại cùng nhau để giải quyết, đảm bảo không làm mất code của ai hoặc gây lỗi logic.
+*   **Ưu tiên hoàn thành:** Nếu gần hết giờ, ưu tiên hoàn thành các chức năng *cốt lõi* theo yêu cầu Rubrics trước khi làm các tính năng mở rộng.
+
