@@ -29,41 +29,96 @@
 
 ## Phân Chia Chức Năng Cụ Thể:
 
-**1. Tài khoản Quản lý (Admin):**
 
-*   **Mục đích:** Quản lý toàn bộ hoạt động của quán trên hệ thống, bao gồm cả quản lý nhân viên và cấu hình cơ bản. Có quyền truy cập cao nhất.
-*   **Chức năng cụ thể:**
-    *   **Login / Logout:** Có thể đăng nhập và đăng xuất.
-    *   **Xem Dashboard:** Xem *tất cả* các báo cáo thống kê (Doanh thu tổng, sản phẩm bán chạy nhất toàn thời gian, hiệu suất theo nhân viên (nếu có),...).
-    *   **Quản lý Sản phẩm:** **Toàn quyền CRUD** (Xem danh sách, Thêm mới, Sửa thông tin chi tiết, Xóa sản phẩm).
-    *   **Quản lý Danh mục:** **Toàn quyền CRUD** (Xem, Thêm, Sửa, Xóa danh mục sản phẩm).
-    *   **Quản lý Đơn hàng:** Xem *tất cả* lịch sử đơn hàng, xem chi tiết đơn hàng, có thể có quyền cập nhật trạng thái đơn hàng (ví dụ: hủy đơn).
-    *   **Quản lý Người dùng:** **Đây là quyền đặc trưng của Admin:**
-        *   Xem danh sách *tất cả* người dùng (cả Admin khác và Staff).
-        *   **Tạo tài khoản mới cho Nhân viên (Staff).**
-        *   Sửa thông tin tài khoản của Nhân viên (ví dụ: cập nhật tên, email, reset mật khẩu).
-        *   Vô hiệu hóa/Kích hoạt lại tài khoản Nhân viên.
-        *   (Tùy chọn) Xóa tài khoản Nhân viên.
-    *   **Xem/Sửa Hồ sơ cá nhân:** Xem và sửa thông tin cá nhân của chính mình (bao gồm đổi mật khẩu).
+**Nguyên tắc áp dụng thuật toán:**
 
-**2. Tài khoản Nhân viên (Staff):**
+*   **Sắp xếp (Sorting):** `Collections.sort`, `List.sort`, Java Streams API (`sorted()`) với `Comparator` tùy chỉnh. Áp dụng cho việc hiển thị dữ liệu trong bảng.
+*   **Tìm kiếm (Searching):**
+    *   **Tuyến tính/Lọc:** Java Streams API (`filter`), `String.contains()`.
+    *   **Nhị phân (Binary Search):** `Collections.binarySearch` (yêu cầu danh sách đã được sắp xếp). Có thể dùng cho việc tìm kiếm nhanh trong danh sách sản phẩm/danh mục lớn đã được sắp xếp theo tên/ID.
+    *   **Nâng cao:** Có thể xem xét các kỹ thuật như tìm kiếm mờ (fuzzy search) nếu muốn xử lý lỗi chính tả (phức tạp hơn).
+*   **Băm (Hashing):** `HashMap`, `HashSet` để lưu trữ, tra cứu nhanh, kiểm tra trùng lặp, caching. Thuật toán băm mật khẩu (BCrypt) đã dùng.
+*   **Cấu trúc dữ liệu khác:** `TreeMap` (Map đã sắp xếp), có thể dùng `PriorityQueue` cho một số tác vụ ưu tiên.
 
-*   **Mục đích:** Thực hiện các tác vụ vận hành hàng ngày trên hệ thống, ghi nhận hoạt động bán hàng (nếu có chức năng tạo đơn), quản lý sản phẩm ở mức độ cơ bản. Quyền truy cập bị giới hạn.
-*   **Chức năng cụ thể:**
-    *   **Login / Logout:** Có thể đăng nhập và đăng xuất.
-    *   **Xem Dashboard:** Xem các báo cáo cơ bản, liên quan đến hoạt động trong ngày hoặc cá nhân (Ví dụ: Doanh thu ca làm việc (nếu có), sản phẩm bán chạy trong ngày, các đơn hàng gần đây). *Một số biểu đồ chi tiết chỉ dành cho Admin.*
-    *   **Quản lý Sản phẩm:**
-        *   **Xem danh sách sản phẩm.**
-        *   (Tùy chọn, nên cân nhắc) Có thể được phép **Sửa** một số thông tin giới hạn như *số lượng tồn kho* (nếu có quản lý kho) hoặc *giá* (nếu được phép).
-        *   **Không được phép** Thêm sản phẩm mới hoặc Xóa sản phẩm.
-    *   **Quản lý Danh mục:** Chỉ được **Xem** danh sách danh mục để biết sản phẩm thuộc loại nào. **Không** được Thêm/Sửa/Xóa.
-    *   **Quản lý Đơn hàng:**
-        *   (Nếu có chức năng POS) **Tạo đơn hàng mới.**
-        *   Xem lịch sử các đơn hàng *do mình tạo* hoặc các đơn hàng *gần đây*.
-        *   Có thể được phép cập nhật trạng thái đơn hàng *do mình phụ trách* (ví dụ: "Đang chuẩn bị", "Đã xong").
-        *   **Không** được xem toàn bộ lịch sử đơn hàng của người khác (trừ khi có cấu hình khác). **Không** được xóa đơn hàng.
-    *   **Quản lý Người dùng:** **Không có quyền này.** Không thể xem danh sách người dùng khác, không thể tạo/sửa/xóa tài khoản.
-    *   **Xem/Sửa Hồ sơ cá nhân:** Chỉ xem và sửa thông tin cá nhân của chính mình (bao gồm đổi mật khẩu).
+---
+
+**1. Tài khoản Quản lý (Admin) - Nâng cấp với Thuật toán:**
+
+Ngoài các chức năng CRUD cơ bản đã có:
+
+*   **Dashboard Nâng cao:**
+    *   **Tính năng:** Hiển thị Top N sản phẩm bán chạy nhất/ít chạy nhất (theo doanh thu/số lượng) trong khoảng thời gian tùy chọn. Hiển thị xu hướng doanh thu (tăng/giảm so với kỳ trước).
+    *   **Thuật toán:**
+        *   **Tổng hợp dữ liệu:** SQL `GROUP BY`, `SUM`, `COUNT`.
+        *   **Sắp xếp (Sorting):** Sắp xếp kết quả tổng hợp (ví dụ: `List<ProductRevenue>` hoặc `Map<Product, Double>`) theo doanh thu/số lượng giảm dần/tăng dần để lấy Top N. Có thể dùng `Collections.sort` hoặc `Stream.sorted`.
+        *   **Cấu trúc dữ liệu (Hashing):** Dùng `HashMap` để tổng hợp doanh thu/số lượng theo sản phẩm/ngày/tháng hiệu quả trước khi sắp xếp.
+    *   **Lợi ích:** Cung cấp cái nhìn sâu sắc hơn về hiệu quả kinh doanh.
+
+*   **Quản lý Sản phẩm Nâng cao:**
+    *   **Tính năng:**
+        *   **Sắp xếp Linh hoạt:** Cho phép sắp xếp danh sách sản phẩm trong bảng theo Tên, Giá, Danh mục, Số lượng tồn (nếu có) bằng cách nhấp vào tiêu đề cột.
+        *   **Tìm kiếm Nâng cao:** Ô tìm kiếm cho phép tìm sản phẩm theo Tên, Mã sản phẩm (nếu có), hoặc Mô tả. Có thể hỗ trợ tìm kiếm không phân biệt chữ hoa/thường.
+        *   **Kiểm tra Trùng lặp khi Thêm:** Khi Admin thêm sản phẩm mới, hệ thống kiểm tra nhanh xem có sản phẩm nào có Tên và Danh mục tương tự đã tồn tại hay không (để tránh tạo nhầm).
+    *   **Thuật toán:**
+        *   **Sắp xếp (Sorting):** Triển khai `Comparator` cho các thuộc tính khác nhau của `Product` và áp dụng khi người dùng nhấp vào header cột (thực hiện sắp xếp trên `ObservableList` của TableView).
+        *   **Tìm kiếm (Searching):** Dùng `Stream.filter` với điều kiện `String.contains` (case-insensitive) trên danh sách sản phẩm đã tải hoặc xây dựng câu lệnh SQL `WHERE ... LIKE ...` động.
+        *   **Băm (Hashing):** Dùng `HashSet<String>` để lưu trữ một "khóa định danh" (ví dụ: `product.getName().toLowerCase() + "_" + category.getId()`) của các sản phẩm hiện có. Khi thêm mới, tạo khóa tương tự và kiểm tra sự tồn tại trong `HashSet` (`contains()`) - tốc độ O(1) trung bình.
+    *   **Lợi ích:** Quản lý sản phẩm hiệu quả, nhanh chóng và tránh dữ liệu rác.
+
+*   **Quản lý Đơn hàng Nâng cao:**
+    *   **Tính năng:**
+        *   **Sắp xếp & Lọc Đơn hàng:** Cho phép sắp xếp đơn hàng theo Ngày tạo, Tổng tiền, Trạng thái, Mã nhân viên tạo. Thêm bộ lọc để xem đơn hàng theo khoảng ngày, theo trạng thái, theo nhân viên.
+        *   **Tìm kiếm Đơn hàng:** Tìm kiếm đơn hàng theo Mã đơn hàng, Tên khách hàng (nếu có), Tên sản phẩm có trong đơn hàng.
+    *   **Thuật toán:**
+        *   **Sắp xếp (Sorting):** Tương tự quản lý sản phẩm, sắp xếp `ObservableList` của `Order` theo các trường khác nhau.
+        *   **Tìm kiếm/Lọc (Searching/Filtering):** Dùng `Stream.filter` hoặc xây dựng câu lệnh SQL `WHERE` phức tạp hơn với các điều kiện lọc/tìm kiếm. Để tìm theo sản phẩm trong đơn, cần join với bảng `order_details` và `products` trong SQL hoặc xử lý logic sau khi lấy dữ liệu.
+    *   **Lợi ích:** Dễ dàng tra cứu, phân tích và quản lý lịch sử đơn hàng lớn.
+
+*   **Quản lý Người dùng Nâng cao:**
+    *   **Tính năng:**
+        *   **Sắp xếp & Lọc Người dùng:** Sắp xếp theo Tên đăng nhập, Họ tên, Vai trò, Trạng thái (Active/Inactive). Lọc theo Vai trò hoặc Trạng thái.
+        *   **Tìm kiếm Người dùng:** Tìm kiếm theo Tên đăng nhập hoặc Họ tên.
+    *   **Thuật toán:**
+        *   **Sắp xếp (Sorting):** Sắp xếp danh sách `User` trong TableView.
+        *   **Tìm kiếm/Lọc (Searching/Filtering):** `Stream.filter` hoặc SQL `WHERE` clause.
+    *   **Lợi ích:** Quản lý nhân viên hiệu quả hơn khi số lượng lớn.
+
+---
+
+**2. Tài khoản Nhân viên (Staff) - Nâng cấp với Thuật toán:**
+
+Ngoài các chức năng cơ bản đã có:
+
+*   **Tạo Đơn hàng Thông minh:**
+    *   **Tính năng:**
+        *   **Tìm kiếm Sản phẩm Nhanh:** Khi thêm sản phẩm vào đơn hàng, ô tìm kiếm cho phép tìm nhanh sản phẩm theo Tên hoặc Mã. Có thể hiển thị gợi ý (autocomplete).
+        *   **Hiển thị Sản phẩm Hay Bán/Mới:** Có thể ưu tiên hiển thị các sản phẩm bán chạy gần đây hoặc sản phẩm mới ở đầu danh sách chọn.
+        *   **(Nâng cao) Gợi ý Combo/Mua kèm:** Dựa trên sản phẩm đang chọn, gợi ý các sản phẩm khác thường được mua kèm (ví dụ: chọn Cà phê -> gợi ý Bánh ngọt).
+    *   **Thuật toán:**
+        *   **Tìm kiếm (Searching):** `Stream.filter` trên danh sách sản phẩm đã cache hoặc query SQL `LIKE`. Cho autocomplete, có thể dùng cấu trúc dữ liệu Trie (nếu cache) hoặc query DB liên tục.
+        *   **Sắp xếp (Sorting):** Lấy dữ liệu thống kê (từ `ReportService` hoặc một service khác) về sản phẩm bán chạy/mới và dùng `Comparator` để sắp xếp danh sách sản phẩm hiển thị khi chọn.
+        *   **Phân tích Mẫu (Pattern Analysis - cho gợi ý):** Yêu cầu phân tích lịch sử `order_details` để tìm các cặp sản phẩm thường xuyên xuất hiện cùng nhau (có thể dùng `HashMap<Integer, HashMap<Integer, Integer>>` để đếm số lần xuất hiện cùng nhau của các cặp productID). -> **Đây là tính năng khá phức tạp, cân nhắc kỹ.**
+    *   **Lợi ích:** Tăng tốc độ tạo đơn hàng, cải thiện trải nghiệm nhân viên, tiềm năng tăng doanh số qua gợi ý.
+
+*   **Quản lý Sản phẩm (Giới hạn):**
+    *   **Tính năng:**
+        *   **Sắp xếp Linh hoạt:** Cho phép Staff sắp xếp danh sách sản phẩm họ được xem theo Tên, Giá, Danh mục.
+        *   **Tìm kiếm Sản phẩm:** Cho phép Staff tìm kiếm nhanh trong danh sách sản phẩm họ được xem.
+    *   **Thuật toán:**
+        *   **Sắp xếp (Sorting):** Tương tự Admin, nhưng áp dụng trên tập dữ liệu Staff được phép xem.
+        *   **Tìm kiếm (Searching):** `Stream.filter` hoặc SQL `LIKE`.
+    *   **Lợi ích:** Giúp Staff tra cứu thông tin sản phẩm nhanh hơn.
+
+*   **Quản lý Đơn hàng (Giới hạn):**
+    *   **Tính năng:**
+        *   **Sắp xếp & Lọc Đơn hàng Cá nhân:** Cho phép sắp xếp các đơn hàng *của mình* hoặc đơn hàng gần đây theo Ngày tạo, Tổng tiền, Trạng thái. Lọc theo trạng thái.
+        *   **Tìm kiếm Đơn hàng Cá nhân:** Tìm kiếm trong các đơn hàng của mình theo Mã đơn hoặc tên sản phẩm.
+    *   **Thuật toán:**
+        *   **Sắp xếp (Sorting):** Sắp xếp danh sách đơn hàng giới hạn Staff được xem.
+        *   **Tìm kiếm/Lọc (Searching/Filtering):** `Stream.filter` hoặc SQL `WHERE` với điều kiện lọc bổ sung (`userId = currentUserId`).
+    *   **Lợi ích:** Giúp Staff theo dõi các đơn hàng mình phụ trách dễ dàng hơn.
+
+---
 
 
 
